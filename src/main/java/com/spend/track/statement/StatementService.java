@@ -29,7 +29,7 @@ public class StatementService {
         this.transactionRepository = transactionRepository;
     }
 
-    public List<Transaction> parseStatement(Long accountId, MultipartFile file) throws IOException {
+    public List<Transaction> parseCreditCardStatement(Long accountId, MultipartFile file) throws IOException {
         PDDocument document = PDDocument.load(file.getInputStream());
         PDFTextStripper pdfTextStripper = new PDFTextStripper();
         String text = pdfTextStripper.getText(document);
@@ -37,7 +37,8 @@ public class StatementService {
         String lineSeparator = pdfTextStripper.getLineSeparator();
         String wordSeparator = pdfTextStripper.getWordSeparator();
         TransactionProfile profile = accountRepository.findById(accountId).orElseThrow();
-        List<Transaction> transactions = StatementUtil.parseTransactions(text, lineSeparator, wordSeparator, prefix, profile);
+
+        List<Transaction> transactions = StatementUtil.parseCreditCardStatement(text, lineSeparator, wordSeparator, prefix, profile);
         return transactionRepository.saveAll(transactions);
     }
 }

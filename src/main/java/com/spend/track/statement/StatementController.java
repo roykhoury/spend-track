@@ -23,7 +23,8 @@ public class StatementController extends BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Transaction>> parseStatement(Long accountId, @RequestBody MultipartFile file) throws IOException {
-        return ResponseEntity.ok(statementService.parseStatement(accountId, file));
+    @RequestMapping(value = "/credit")
+    public ResponseEntity<List<Transaction>> parseCreditCardStatement(Long accountId, @RequestBody MultipartFile file) throws IOException {
+        return ResponseEntity.ok(statementService.parseCreditCardStatement(accountId, file));
     }
 }

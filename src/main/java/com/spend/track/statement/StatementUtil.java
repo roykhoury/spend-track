@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @Log4j2
 @UtilityClass
 public class StatementUtil {
-    public List<Transaction> parseTransactions(String pdfString, String lineSeparator, String transactionSectionSeparator, String transactionPrefix, TransactionProfile profile) {
+    public List<Transaction> parseCreditCardStatement(String pdfString, String lineSeparator, String transactionSectionSeparator, String transactionPrefix, TransactionProfile profile) {
         List<Transaction> result = new ArrayList<>();
         for (String pdfLine : pdfString.split(lineSeparator)) {
             if (!pdfLine.matches(transactionPrefix))
