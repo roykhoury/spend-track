@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://app_db:3306/spend_track
+    username: spend-track-admin
+    password: admin-pass-123-!
+
+  jpa:
+    hibernate:
+      ddl-auto: update

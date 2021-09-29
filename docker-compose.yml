@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    restart: on-failure
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    links:
+      - mariadb:app_db
+  mariadb:
+    image: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: spend_track
+      MYSQL_USER: spend-track-admin
+      MYSQL_PASSWORD: spendAdmin123Pass!
+      MYSQL_ROOT_PASSWORD: mypass
