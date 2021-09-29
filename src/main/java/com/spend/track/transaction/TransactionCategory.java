@@ -8,5 +8,6 @@ public enum TransactionCategory {
     SAVINGS,
     TECH_SPENDING,
     ENTERTAINMENT,
+    BILLS,
     IDK
 }

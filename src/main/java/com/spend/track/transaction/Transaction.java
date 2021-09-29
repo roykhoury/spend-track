@@ -20,6 +20,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -39,7 +40,7 @@ public abstract class Transaction implements Serializable {
     private Long id;
     private double amount;
     private String description;
-    private LocalDateTime date;
+    private LocalDate date;
     private TransactionCategory category;
 
     @JsonIgnore
