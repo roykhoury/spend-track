@@ -2,6 +2,8 @@ package com.spend.track.statement;
 
 import com.spend.track.transaction.Transaction;
 import com.spend.track.transaction.TransactionRepository;
+import com.spend.track.transaction.category.CategoryMapping;
+import com.spend.track.transaction.category.CategoryRepository;
 import com.spend.track.user.AccountRepository;
 import com.spend.track.user.TransactionProfile;
 import lombok.extern.log4j.Log4j2;
@@ -19,13 +21,14 @@ import java.util.List;
 public class StatementService {
 
     private final AccountRepository accountRepository;
+    private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
-
     @Value("${spend-track.bnc-transaction-prefix}")
     private String prefix;
 
-    public StatementService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    public StatementService(AccountRepository accountRepository, CategoryRepository categoryRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.categoryRepository = categoryRepository;
         this.transactionRepository = transactionRepository;
     }
 
@@ -39,6 +42,16 @@ public class StatementService {
         TransactionProfile profile = accountRepository.findById(accountId).orElseThrow();
 
         List<Transaction> transactions = StatementUtil.parseCreditCardStatement(text, lineSeparator, wordSeparator, prefix, profile);
+        assignCategories(transactions);
+
         return transactionRepository.saveAll(transactions);
+    }
+
+    private void assignCategories(List<Transaction> transactions) {
+        for (Transaction transaction : transactions) {
+            CategoryMapping mapping = categoryRepository.findByDescription(transaction.getDescription()).orElseThrow();
+            transaction.setCategory(mapping.getCategory());
+        }
+        transactionRepository.saveAll(transactions);
     }
 }

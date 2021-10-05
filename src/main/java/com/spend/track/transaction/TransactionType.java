@@ -5,7 +5,6 @@ public enum TransactionType {
     EARNING(1);
 
     int val;
-
     TransactionType(int val) {
         this.val = val;
     }

@@ -3,6 +3,7 @@ package com.spend.track.statement;
 import com.spend.track.transaction.Earning;
 import com.spend.track.transaction.Spending;
 import com.spend.track.transaction.Transaction;
+import com.spend.track.transaction.category.TransactionCategory;
 import com.spend.track.user.TransactionProfile;
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
@@ -32,27 +33,29 @@ public class StatementUtil {
             // Earning or Spending
             if (amountStr.contains("-")) {
                 amountStr = amountStr.replace("-", "");
-                result.add(createEarning(Double.parseDouble(amountStr), profile, description, year, month, day));
+                result.add(createEarning(Double.parseDouble(amountStr), profile, description, year, month, day, null));
             } else {
-                result.add(createSpending(Double.parseDouble(amountStr), profile, description, year, month, day));
+                result.add(createSpending(Double.parseDouble(amountStr), profile, description, year, month, day, null));
             }
         }
         return result;
     }
 
-    private static Earning createEarning(double amount, TransactionProfile profile, String description, int year, int month, int day) {
+    private static Earning createEarning(double amount, TransactionProfile profile, String description, int year, int month, int day, TransactionCategory category) {
         Earning earning = new Earning();
         earning.setAmount(amount);
         earning.setProfile(profile);
+        earning.setCategory(category);
         earning.setDescription(description);
         earning.setDate(LocalDate.of(year, month, day));
         return earning;
     }
 
-    private static Spending createSpending(double amount, TransactionProfile profile, String description, int year, int month, int day) {
+    private static Spending createSpending(double amount, TransactionProfile profile, String description, int year, int month, int day, TransactionCategory category) {
         Spending spending = new Spending();
         spending.setAmount(amount);
         spending.setProfile(profile);
+        spending.setCategory(category);
         spending.setDescription(description);
         spending.setDate(LocalDate.of(year, month, day));
         return spending;
@@ -64,6 +67,6 @@ public class StatementUtil {
 
         Pattern pattern = Pattern.compile("[A-Za-z]*.* ");
         Matcher matcher = pattern.matcher(line);
-        return matcher.find() ? matcher.group() : "";
+        return matcher.find() ? matcher.group().replaceAll(",", " ") : "";
     }
 }

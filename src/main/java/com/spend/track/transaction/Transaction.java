@@ -3,6 +3,7 @@ package com.spend.track.transaction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.spend.track.transaction.category.TransactionCategory;
 import com.spend.track.user.TransactionProfile;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
